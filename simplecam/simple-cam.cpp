@@ -177,8 +177,7 @@ int main()
 	 * process space.
 	 */
 	std::unique_ptr<CameraManager> cm = std::make_unique<CameraManager>();
-	cout << "Test Debugger" << endl;
-d
+	std::cout << "Test Debugger" << std::endl;
 
 	/*
 	 * Just as a test, generate names of the Cameras registered in the
