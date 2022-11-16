@@ -61,9 +61,14 @@ int main(void)
             const char* videoportero_message = "Videoportero EIE-PUCV 2022 ";
             std::unique_ptr<uint8_t[]> videoportero_frame = std::unique_ptr<uint8_t[]>(new uint8_t[PAYLOAD_LEN]);
 
-            // Now we fill the videoportero_frame with the videoportero_message
-            memset(videoportero_frame.get(), 0, PAYLOAD_LEN);
-            memcpy(videoportero_frame.get(), videoportero_message, strlen(videoportero_message));
+            // First set the videoportero_frame with the NAL unit header
+            memset(videoportero_frame.get(), 'a', PAYLOAD_LEN);
+            memset(videoportero_frame.get(),     0, 3);
+            memset(videoportero_frame.get() + 3, 1, 1);
+
+            // Then fill the payload with the videoportero_message string
+            memset(videoportero_frame.get() + 4, 1, (19 << 1));
+            memcpy(videoportero_frame.get() + 4, videoportero_message, strlen(videoportero_message));
 
             if ((i+1)%10  == 0 || i == 0) // print every 10 frames and first
                 std::cout << "Sending frame " << i + 1 << '/' << AMOUNT_OF_TEST_PACKETS << std::endl;
