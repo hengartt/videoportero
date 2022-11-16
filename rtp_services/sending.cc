@@ -42,10 +42,7 @@ int main(void)
      *
      * In this example, we have one media stream with the remote participant: H265 */
 
-    //int flags = RCE_SEND_ONLY;
-
-    int flags = RCE_SRTP_AUTHENTICATE_RTP;
-
+    int flags = RCE_SEND_ONLY;
     uvgrtp::media_stream *hevc = sess->create_stream(REMOTE_PORT, RTP_FORMAT_H265, flags);
 
     if (hevc)
@@ -54,23 +51,33 @@ int main(void)
          * a file or a real-time encoded stream */
         for (int i = 0; i < AMOUNT_OF_TEST_PACKETS; ++i)
         {
-            std::unique_ptr<uint8_t[]> dummy_frame = std::unique_ptr<uint8_t[]>(new uint8_t[PAYLOAD_LEN]);
+            /* std::unique_ptr<uint8_t[]> dummy_frame = std::unique_ptr<uint8_t[]>(new uint8_t[PAYLOAD_LEN]);
             memset(dummy_frame.get(), 'a', PAYLOAD_LEN); // NAL payload
             memset(dummy_frame.get(),     0, 3);
             memset(dummy_frame.get() + 3, 1, 1);
-            memset(dummy_frame.get() + 4, 1, (19 << 1)); // Intra frame NAL type
+            memset(dummy_frame.get() + 4, 1, (19 << 1)); // Intra frame NAL type */
+
+            // Create a new frame called videoportero_frame of type std::unique_ptr of size PAYLOAD_LEN and set the payload with "Videoportero EIE-PUCV 2022" string
+            const char* videoportero_message = "Videoportero EIE-PUCV 2022 ";
+            std::unique_ptr<uint8_t[]> videoportero_frame = std::unique_ptr<uint8_t[]>(new uint8_t[PAYLOAD_LEN]);
+
+            // Now we fill the videoportero_frame with the string "Videoportero EIE-PUCV 2022 " repeteadly
+            for (int j = 0; j < PAYLOAD_LEN; j += strlen(videoportero_message))
+            {
+                memcpy(videoportero_frame.get() + j, videoportero_message, strlen(videoportero_message));
+            }
 
             if ((i+1)%10  == 0 || i == 0) // print every 10 frames and first
                 std::cout << "Sending frame " << i + 1 << '/' << AMOUNT_OF_TEST_PACKETS << std::endl;
 
-            if (hevc->push_frame(std::move(dummy_frame), PAYLOAD_LEN, RTP_NO_FLAGS) != RTP_OK)
+            if (hevc->push_frame(std::move(videoportero_frame), PAYLOAD_LEN, RTP_NO_FLAGS) != RTP_OK)
             {
                 std::cout << "Failed to send RTP frame!" << std::endl;
             }
         }
 
-         std::cout << "Sending finished. Waiting "<< END_WAIT.count()
-                   << " seconds before exiting." << std::endl;
+        std::cout << "Sending finished. Waiting "<< END_WAIT.count()
+                << " seconds before exiting." << std::endl;
 
         // wait a little bit so pop-up console users have time to see the results
         std::this_thread::sleep_for(END_WAIT);
