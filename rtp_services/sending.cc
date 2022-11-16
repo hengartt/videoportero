@@ -42,8 +42,8 @@ int main(void)
      *
      * In this example, we have one media stream with the remote participant: H265 */
 
-    int flags = RCE_SEND_ONLY;
-    uvgrtp::media_stream *hevc = sess->create_stream(REMOTE_PORT, RTP_FORMAT_H265, flags);
+    int flags = RCE_SRTP_AUTHENTICATE_RTP;
+    uvgrtp::media_stream *hevc = sess->create_stream(REMOTE_PORT, RTP_FORMAT_H264, flags);
 
     if (hevc)
     {
