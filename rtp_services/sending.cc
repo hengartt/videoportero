@@ -16,7 +16,7 @@ constexpr uint16_t REMOTE_PORT = 8890;
 
 // the parameters of demostration
 constexpr size_t PAYLOAD_LEN = 100;
-constexpr int    AMOUNT_OF_TEST_PACKETS = 100;
+constexpr int    AMOUNT_OF_TEST_PACKETS = 1;
 constexpr auto   END_WAIT = std::chrono::seconds(5);
 
 int main(void)
@@ -61,11 +61,9 @@ int main(void)
             const char* videoportero_message = "Videoportero EIE-PUCV 2022 ";
             std::unique_ptr<uint8_t[]> videoportero_frame = std::unique_ptr<uint8_t[]>(new uint8_t[PAYLOAD_LEN]);
 
-            // Now we fill the videoportero_frame with the string "Videoportero EIE-PUCV 2022 " repeteadly
-            for (int j = 0; j < PAYLOAD_LEN; j += strlen(videoportero_message))
-            {
-                memcpy(videoportero_frame.get() + j, videoportero_message, strlen(videoportero_message));
-            }
+            // Now we fill the videoportero_frame with the videoportero_message
+            memset(videoportero_frame.get(), 0, PAYLOAD_LEN);
+            memcpy(videoportero_frame.get(), videoportero_message, strlen(videoportero_message));
 
             if ((i+1)%10  == 0 || i == 0) // print every 10 frames and first
                 std::cout << "Sending frame " << i + 1 << '/' << AMOUNT_OF_TEST_PACKETS << std::endl;
