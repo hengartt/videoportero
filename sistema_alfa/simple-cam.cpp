@@ -60,7 +60,7 @@ static void processRequest(Request *request)
 	 * all the metadata for inspection. A custom application can parse each
 	 * of these items and process them according to its needs.
 	 */
-	const ControlList &requestMetadata = request->metadata();
+	/* const ControlList &requestMetadata = request->metadata(); */
 	/* for (const auto &ctrl : requestMetadata) {
 		const ControlId *id = controls::controls.at(ctrl.first);
 		const ControlValue &value = ctrl.second;
