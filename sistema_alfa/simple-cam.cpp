@@ -47,7 +47,7 @@ static void requestComplete(Request *request)
 static void processRequest(Request *request)
 {
 	std::cout << std::endl
-		  << "Solicitud completa: " << request->toString() << std::endl;
+		  << "Request completed: " << request->toString() << std::endl;
 
 	/*
 	 * When a request has completed, it is populated with a metadata control
@@ -61,13 +61,13 @@ static void processRequest(Request *request)
 	 * of these items and process them according to its needs.
 	 */
 	const ControlList &requestMetadata = request->metadata();
-	for (const auto &ctrl : requestMetadata) {
+	/* for (const auto &ctrl : requestMetadata) {
 		const ControlId *id = controls::controls.at(ctrl.first);
 		const ControlValue &value = ctrl.second;
 
 		std::cout << "\t" << id->name() << " = " << value.toString()
 			  << std::endl;
-	}
+	} */
 
 	/*
 	 * Each buffer has its own FrameMetadata to describe its state, or the
@@ -137,13 +137,13 @@ std::string cameraName(Camera *camera)
 	if (location) {
 		switch (*location) {
 		case properties::CameraLocationFront:
-			name = "Cámara frontal interna";
+			name = "Internal front camera";
 			break;
 		case properties::CameraLocationBack:
-			name = "Cámara trasera interna";
+			name = "Internal back camera";
 			break;
 		case properties::CameraLocationExternal:
-			name = "Cámara externa";
+			name = "External camera";
 			const auto &model = props.get(properties::Model);
 			if (model)
 				name = " '" + *model + "'";
@@ -209,7 +209,8 @@ int main()
 	 * cm->cameras()[0]).
 	 */
 	if (cm->cameras().empty()) {
-		std::cout << "No se encontró ninguna cámara" << std::endl;
+		std::cout << "No se especificaron cámaras."
+			  << std::endl;
 		cm->stop();
 		return EXIT_FAILURE;
 	}
@@ -268,7 +269,7 @@ int main()
 	 * by the Camera depending on the Role the application has requested.
 	 */
 	StreamConfiguration &streamConfig = config->at(0);
-	std::cout << "Configuración por defecto viewfinder: "
+	std::cout << "Default viewfinder configuration is: "
 		  << streamConfig.toString() << std::endl;
 
 	/*
@@ -293,7 +294,7 @@ int main()
 
 	int ret = camera->configure(config.get());
 	if (ret) {
-		std::cout << "FALLÓ LA CONFIGURACIÓN!" << std::endl;
+		std::cout << "CONFIGURATION FAILED!" << std::endl;
 		return EXIT_FAILURE;
 	}
 #endif
@@ -304,7 +305,7 @@ int main()
 	 * requested.
 	 */
 	config->validate();
-	std::cout << "Configuración viewfinder validada: "
+	std::cout << "Validated viewfinder configuration is: "
 		  << streamConfig.toString() << std::endl;
 
 	/*
@@ -344,7 +345,7 @@ int main()
 		}
 
 		size_t allocated = allocator->buffers(cfg.stream()).size();
-		std::cout << "Asignado " << allocated << " buffers para stream" << std::endl;
+		std::cout << "Asignado " << allocated << " buffers para el stream" << std::endl;
 	}
 
 	/*
@@ -372,7 +373,7 @@ int main()
 		std::unique_ptr<Request> request = camera->createRequest();
 		if (!request)
 		{
-			std::cerr << "No se puede crear una solicitud" << std::endl;
+			std::cerr << "No se puede crear la solicitud" << std::endl;
 			return EXIT_FAILURE;
 		}
 
@@ -380,7 +381,7 @@ int main()
 		int ret = request->addBuffer(stream, buffer.get());
 		if (ret < 0)
 		{
-			std::cerr << "No se puede setear el buffer"
+			std::cerr << "No se puede setear el buffer para la solicitud"
 				  << std::endl;
 			return EXIT_FAILURE;
 		}
@@ -439,8 +440,8 @@ int main()
 	 */
 	loop.timeout(TIMEOUT_SEC);
 	int ret = loop.exec();
-	std::cout << "La captura corrió por " << TIMEOUT_SEC << " segundos y "
-		  << "se detuvo con exit status: " << ret << std::endl;
+	std::cout << "Capturando durante " << TIMEOUT_SEC << " segundos y "
+		  << "detenido con exit status: " << ret << std::endl;
 
 	/*
 	 * --------------------------------------------------------------------

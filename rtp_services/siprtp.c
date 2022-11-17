@@ -320,7 +320,7 @@ static pj_status_t init_sip()
 	    status = pj_sockaddr_in_init(&addr, &app.local_addr, 
 					 (pj_uint16_t)app.sip_port);
 	    if (status != PJ_SUCCESS) {
-		app_perror(THIS_FILE, "Unable to resolve IP interface", status);
+		app_perror(THIS_FILE, "No se pudo resolver la interfaz IP", status);
 		return status;
 	    }
 	}
@@ -329,11 +329,11 @@ static pj_status_t init_sip()
 					    (app.local_addr.slen ? &addrname:NULL),
 					    1, &tp);
 	if (status != PJ_SUCCESS) {
-	    app_perror(THIS_FILE, "Unable to start UDP transport", status);
+	    app_perror(THIS_FILE, "No se pudo iniciar el transporte UDP", status);
 	    return status;
 	}
 
-	PJ_LOG(3,(THIS_FILE, "SIP UDP listening on %.*s:%d",
+	PJ_LOG(3,(THIS_FILE, "SIP UDP escuchando en %.*s:%d",
 				(int)tp->local_name.host.slen, tp->local_name.host.ptr,
 				tp->local_name.port));
     }
