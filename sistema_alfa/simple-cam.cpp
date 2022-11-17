@@ -13,7 +13,7 @@
 
 #include "event_loop.h"
 
-#define TIMEOUT_SEC 3
+#define TIMEOUT_SEC 2
 
 using namespace libcamera;
 static std::shared_ptr<Camera> camera;
@@ -47,7 +47,7 @@ static void requestComplete(Request *request)
 static void processRequest(Request *request)
 {
 	std::cout << std::endl
-		  << "Request completed: " << request->toString() << std::endl;
+		  << "Solicitud completada: " << request->toString() << std::endl;
 
 	/*
 	 * When a request has completed, it is populated with a metadata control
@@ -137,13 +137,13 @@ std::string cameraName(Camera *camera)
 	if (location) {
 		switch (*location) {
 		case properties::CameraLocationFront:
-			name = "Internal front camera";
+			name = "Cámara interna frontal";
 			break;
 		case properties::CameraLocationBack:
-			name = "Internal back camera";
+			name = "Cámara interna trasera";
 			break;
 		case properties::CameraLocationExternal:
-			name = "External camera";
+			name = "Cámara externa";
 			const auto &model = props.get(properties::Model);
 			if (model)
 				name = " '" + *model + "'";
@@ -269,7 +269,7 @@ int main()
 	 * by the Camera depending on the Role the application has requested.
 	 */
 	StreamConfiguration &streamConfig = config->at(0);
-	std::cout << "Default viewfinder configuration is: "
+	std::cout << "Configuración default de la cámara: "
 		  << streamConfig.toString() << std::endl;
 
 	/*
@@ -305,7 +305,7 @@ int main()
 	 * requested.
 	 */
 	config->validate();
-	std::cout << "Validated viewfinder configuration is: "
+	std::cout << "Configuración validada para la cámara: "
 		  << streamConfig.toString() << std::endl;
 
 	/*
@@ -440,8 +440,8 @@ int main()
 	 */
 	loop.timeout(TIMEOUT_SEC);
 	int ret = loop.exec();
-	std::cout << "Capturando durante " << TIMEOUT_SEC << " segundos y "
-		  << "detenido con exit status: " << ret << std::endl;
+	std::cout << std::endl << "Capturando durante " << TIMEOUT_SEC << " segundos y "
+		  << "programa detenido con exit status: " << ret << std::endl;
 
 	/*
 	 * --------------------------------------------------------------------
