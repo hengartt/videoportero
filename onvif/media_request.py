@@ -101,13 +101,13 @@ Content-Length:  0
         # Crear paquete SIP con método INVITE
         sip = self.getINVITE(terminal)
         
-        print('Llamando a terminal')
+        print('Llamando a terminal....')
         # Enviar packete SIP a la terminal
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         # Establecer puerto de origen
         sock.bind((self.self_ip, 5060))
         sock.sendto(sip.encode(), (terminal, 5060))
-        print('Paquete SIP enviado\n')
+        print('Videoportero: INVITE enviado\n')
 
         while True:
             try:
