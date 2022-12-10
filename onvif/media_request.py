@@ -51,13 +51,24 @@ a=fmtp:121 0-15
 Via: SIP/2.0/UDP ''' +self.self_ip+ ''':5060;rport;branch=z9hG4bKPjMtTNiHYmNLr3J9bm5TyUGMJuhp3nPiJR
 Max-Forwards: 70
 From: sip:''' +self.self_ip+ ''';tag=PKcMBzp6yhIZQG-du1TsYkW1MPmX6L5V
-To: sip:192.168.100.119;tag='''+tag+'''
+To: sip:'''+ terminal +''';tag='''+tag+'''
 Call-ID: 2mdIf8lexOTBIMg2pPgKOBdDB3SowCcf
 CSeq: 124 ACK
 Content-Length: 0
 
 '''
         return sip
+    
+    def getOKBYE(self, terminal, tag):
+        sip = '''SIP/2.0 200 OK
+Via: SIP/2.0/UDP '''+ self.self_ip +''':5060;rport=5060;received='''+ self.self_ip +''';branch=z9hG4bKPjIwihvknffnUTD6prc4w82Jd2vxFy16E8
+Call-ID: 2mdIf8lexOTBIMg2pPgKOBdDB3SowCcf
+[Generated Call-ID: 2mdIf8lexOTBIMg2pPgKOBdDB3SowCcf]
+From: <sip:'''+ self.self_ip +'''>;tag=PKcMBzp6yhIZQG-du1TsYkW1MPmX6L5V
+To: <sip:'''+ terminal +'''>;tag='''+tag+'''
+CSeq: 125 BYE
+Content-Length:  0
+'''
 
     def mostrar_menu(self):
         print(self.menu)
@@ -76,11 +87,12 @@ Content-Length: 0
 
         # Pedir número de terminal
         contactos = {
-            '1': '192.168.100.119'
+            '   1:': '192.168.100.119'
         }
-        print('Contactos:')
+        print(' Contactos:')
         for key, value in contactos.items():
             print(key, value)
+        print('')
 
         terminal = input('Introduzca un contacto: ')
         terminal = contactos.get(terminal)
@@ -114,6 +126,9 @@ Content-Length: 0
                     print('Terminal:100 Trying')
                 if data.decode().find('BYE sip:') != -1:
                     print('Terminal:BYE')
+
+                    # Enviar OK
+
 
                     sock.close()
                     break
