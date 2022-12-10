@@ -72,8 +72,9 @@ a=fmtp:121 0-15
         while True:
             # Escuchar el puerto de SIP (5060)
             sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            sock.bind((self.self_ip, 56992))
+            sock.bind((self.self_ip, 5060))
             data, addr = sock.recvfrom(1024)
+            print(addr)
             print(data)
         
     
