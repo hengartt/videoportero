@@ -82,11 +82,11 @@ a=fmtp:121 0-15
             data, addr = sock.recvfrom(1024)
             # Si la respuesta es 200 OK, entonces se puede realizar la petición POST
             if data.decode().find('200 OK') != -1:
-                print('Terminal contesta')
+                print('Terminal:200 OK')
             if data.decode().find('100 Trying') != -1:
-                print('100 Trying')
-            if data.decode().find('Bye') != -1:
-                print('Bye')
+                print('Terminal:100 Trying')
+            if data.decode().find('BYE') != -1:
+                print('Terminal:BYE')
                 break
     
     def salir(self):
