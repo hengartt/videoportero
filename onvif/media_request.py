@@ -75,7 +75,15 @@ Content-Length: 0
     def call(self):
 
         # Pedir número de terminal
-        terminal = input('Introduzca la IP de la terminal: ')
+        contactos = {
+            '1': '192.168.100.119'
+        }
+        print('Contactos:')
+        for key, value in contactos.items():
+            print(key, value)
+
+        terminal = input('Introduzca un contacto: ')
+        terminal = contactos.get(terminal)
 
         # Crear paquete SIP con método INVITE
         sip = self.getINVITE(terminal)
