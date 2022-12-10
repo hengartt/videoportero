@@ -85,7 +85,7 @@ a=fmtp:121 0-15
                 print('Terminal:200 OK')
             if data.decode().find('100 Trying') != -1:
                 print('Terminal:100 Trying')
-            if data.decode().find('BYE') != -1:
+            if data.decode().find('BYE sip:') != -1:
                 print('Terminal:BYE')
                 break
     
