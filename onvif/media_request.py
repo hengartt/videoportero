@@ -69,14 +69,14 @@ a=fmtp:121 0-15
         print('Esperando respuesta...')
 
         # Ahora esperar a que la terminal conteste
+        # Escuchar el puerto de SIP (5060)
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock.bind((self.self_ip, 5060))
+
         while True:
-            # Escuchar el puerto de SIP (5060)
-            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            sock.bind((self.self_ip, 5060))
             data, addr = sock.recvfrom(1024)
             print(addr)
-            print(data)
-        
+            print(data)        
     
     def salir(self):
         print('Saliendo del programa')
