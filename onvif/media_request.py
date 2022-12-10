@@ -101,12 +101,12 @@ Content-Length: 0
                 print('Terminal:200 OK')
                 socket.close()
 
-                socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-                socket.bind((self.self_ip, 5060))
+                socket_send = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+                socket_send.bind((self.self_ip, 5060))
                 # Enviar ACK
                 sip = self.getACK(terminal)                
-                socket.sendto(sip.encode(), (terminal, 5060))
-                socket.close()
+                socket_send.sendto(sip.encode(), (terminal, 5060))
+                socket_send.close()
 
             if data.decode().find('100 Trying') != -1:
                 print('Terminal:100 Trying')
@@ -114,11 +114,11 @@ Content-Length: 0
                 print('Terminal:BYE')
                 
                 # Enviar ACK
-                socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-                socket.bind((self.self_ip, 5060))
+                socket_send = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+                socket_send.bind((self.self_ip, 5060))
                 sip = self.getACK(terminal)                
-                socket.sendto(sip.encode(), (terminal, 5060))
-                socket.close()
+                socket_send.sendto(sip.encode(), (terminal, 5060))
+                socket_send.close()
 
                 sock.close()
                 break
