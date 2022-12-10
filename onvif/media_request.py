@@ -95,15 +95,25 @@ Content-Length: 0
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         sock.bind((self.self_ip, 5060))
 
+        flag_sock = True
+
         while True:
+            if flag_sock:
+                print('Esperando respuesta...')
+            else:
+                sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+                print('Esperando respuesta...')
+
             data, addr = sock.recvfrom(1024)
             # Si la respuesta es 200 OK, entonces se puede realizar la petición POST
             if data.decode().find('200 OK') != -1 and data.decode().find('INVITE') != -1:
                 print('Terminal:200 OK (INVITE)')
+                sock.close()
+                flag_sock = False
 
+                # Enviar ACK
                 socket_send = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
                 socket_send.bind((self.self_ip, 5060))
-                # Enviar ACK
                 sip = self.getACK(terminal)                
                 socket_send.sendto(sip.encode(), (terminal, 5060))
                 socket_send.close()
@@ -112,6 +122,9 @@ Content-Length: 0
                 print('Terminal:100 Trying')
             if data.decode().find('BYE sip:') != -1:
                 print('Terminal:BYE')
+
+                sock.close()
+                flag_sock = False
                 
                 # Enviar ACK
                 socket_send = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -119,8 +132,6 @@ Content-Length: 0
                 sip = self.getACK(terminal)                
                 socket_send.sendto(sip.encode(), (terminal, 5060))
                 socket_send.close()
-
-                sock.close()
                 break
     
     def salir(self):
