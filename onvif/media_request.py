@@ -4,7 +4,7 @@ import requests
 import xml.etree.ElementTree as ET
 import numpy as np
 import socket
-import time
+import threading
 
 class Menu:
     def __init__(self):
@@ -72,6 +72,28 @@ Content-Length: 0
             else:
                 print('{0} no es una opción válida'.format(opcion))
 
+    def escuchar(self, terminal):
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock.bind((self.self_ip, 5060))
+        sock.listen(1)
+        while True:
+            conn, addr = sock.accept()
+            data = conn.recv(1024)
+            if data.decode().find('200 OK') != -1 and data.decode().find('INVITE') != -1:
+                print('Terminal:200 OK (INVITE)')
+
+                # Enviar ACK
+                sip = self.getACK(terminal)                
+                sock.sendto(sip.encode(), (terminal, 5060))
+
+            if data.decode().find('100 Trying') != -1:
+                print('Terminal:100 Trying')
+            if data.decode().find('BYE sip:') != -1:
+                print('Terminal:BYE')
+
+                sock.close()
+                break
+
     def call(self):
 
         # Pedir número de terminal
@@ -92,48 +114,10 @@ Content-Length: 0
         print('Esperando respuesta...')
 
         # Ahora esperar a que la terminal conteste
-        # Escuchar el puerto de SIP (5060)
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.bind((self.self_ip, 5060))
-
-        flag_sock = True
-
-        while True:
-            if flag_sock:
-                print('Esperando respuesta...')
-            else:
-                sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-                print('Esperando respuesta...')
-
-            data, addr = sock.recvfrom(1024)
-            # Si la respuesta es 200 OK, entonces se puede realizar la petición POST
-            if data.decode().find('200 OK') != -1 and data.decode().find('INVITE') != -1:
-                print('Terminal:200 OK (INVITE)')
-                sock.close()
-                flag_sock = False
-
-                # Enviar ACK
-                socket_send = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-                socket_send.bind((self.self_ip, 5060))
-                sip = self.getACK(terminal)                
-                socket_send.sendto(sip.encode(), (terminal, 5060))
-                socket_send.close()
-
-            if data.decode().find('100 Trying') != -1:
-                print('Terminal:100 Trying')
-            if data.decode().find('BYE sip:') != -1:
-                print('Terminal:BYE')
-
-                sock.close()
-                flag_sock = False
-                
-                # Enviar ACK
-                socket_send = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-                socket_send.bind((self.self_ip, 5060))
-                sip = self.getACK(terminal)                
-                socket_send.sendto(sip.encode(), (terminal, 5060))
-                socket_send.close()
-                break
+        # Escuchar el puerto de SIP (5060) y esperar a que la terminal conteste
+        # Habilitar nuevo hilo para que el programa principal siga funcionando
+        hilo = threading.Thread(target=self.escuchar, args=(terminal,))
+        hilo.start()    
     
     def salir(self):
         print('Saliendo del programa')
