@@ -47,7 +47,8 @@ CSeq: 124 INVITE
 Allow: INVITE, ACK, BYE, CANCEL, UPDATE
 Supported: 
 Content-Type: application/sdp
-Content-Length:   219
+Content-Length: 219
+
 v=0
 o=pjsip-siprtp 3878938575 3878938575 IN IP4 videoportero
 s=pjsip
