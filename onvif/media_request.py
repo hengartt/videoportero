@@ -129,10 +129,8 @@ Content-Length:  0
                 if data.decode().find('BYE sip:') != -1:
                     print('Terminal:BYE')
 
-                    # Buscar todos los tag en el paquete
-                    print(data.decode())
-                    tag = ''
-                    
+                    # Extraer el tag despues de From: <sip: hasta el salto de linea
+                    tag = data.decode().split('From: <sip:')[1].split('tag=')[1].split('\r')[0]                    
                     print('Tag: ' + tag)
 
                     # Enviar OK
