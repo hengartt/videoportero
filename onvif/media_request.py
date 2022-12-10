@@ -125,6 +125,7 @@ Content-Length:  0
 
                 if data.decode().find('100 Trying') != -1:
                     print('Terminal:100 Trying')
+
                 if data.decode().find('BYE sip:') != -1:
                     print('Terminal:BYE')
 
@@ -140,6 +141,8 @@ Content-Length:  0
                     # Enviar OK
                     sip = self.getOKBYE(terminal, branch, tag_from, tag_to)
                     sock.sendto(sip.encode(), (terminal, 5060))
+                    sock.close()
+                    break
                     
                 print('Esperando respuesta...')
             except(KeyError, ValueError, IndexError):
