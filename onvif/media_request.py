@@ -19,25 +19,7 @@ class Menu:
             '2': self.salir
         }
 
-    def mostrar_menu(self):
-        print(self.menu)
-
-    def ejecutar(self):
-        while True:
-            self.mostrar_menu()
-            opcion = input('Elija una opción: ')
-            accion = self.opciones.get(opcion)
-            if accion:
-                accion()
-            else:
-                print('{0} no es una opción válida'.format(opcion))
-
-    def call(self):
-
-        # Pedir número de terminal
-        terminal = input('Introduzca la IP de la terminal: ')
-
-        # Crear paquete SIP
+    def getINVITE(self, terminal):
         sip = '''INVITE sip:''' + terminal+  ''' SIP/2.0
 Via: SIP/2.0/UDP ''' +self.self_ip+ ''':5060;rport;branch=z9hG4bKPjiNeUsXjdMuRBU2j.KGSI94O1i7pQoYqc
 Max-Forwards: 70
@@ -62,6 +44,40 @@ a=sendrecv
 a=rtpmap:121 telephone-event/8000
 a=fmtp:121 0-15
 '''
+        return sip
+
+    def getACK(self, terminal):
+        sip = '''ACK sip:''' +terminal+ ''':5060 SIP/2.0
+Via: SIP/2.0/UDP ''' +self.self_ip+ ''':5060;rport;branch=z9hG4bKPjMtTNiHYmNLr3J9bm5TyUGMJuhp3nPiJR
+Max-Forwards: 70
+From: sip:''' +self.self_ip+ ''';tag=PKcMBzp6yhIZQG-du1TsYkW1MPmX6L5V
+To: sip:192.168.100.119;tag=d1618be9-97ee-417b-b1d8-0323ddc06830
+Call-ID: 2mdIf8lexOTBIMg2pPgKOBdDB3SowCcf
+CSeq: 124 ACK
+Content-Length:  0'''
+        return sip
+
+    def mostrar_menu(self):
+        print(self.menu)
+
+    def ejecutar(self):
+        while True:
+            self.mostrar_menu()
+            opcion = input('Elija una opción: ')
+            accion = self.opciones.get(opcion)
+            if accion:
+                accion()
+            else:
+                print('{0} no es una opción válida'.format(opcion))
+
+    def call(self):
+
+        # Pedir número de terminal
+        terminal = input('Introduzca la IP de la terminal: ')
+
+        # Crear paquete SIP con método INVITE
+        sip = self.getINVITE(terminal)
+        
         print('Llamando a terminal')
         # Enviar packete SIP a la terminal
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -85,20 +101,18 @@ a=fmtp:121 0-15
                 print('Terminal:200 OK')
 
                 # Enviar ACK
-                sip = '''ACK sip:''' +terminal+ ''':5060 SIP/2.0
-Via: SIP/2.0/UDP ''' +self.self_ip+ ''':5060;rport;branch=z9hG4bKPjMtTNiHYmNLr3J9bm5TyUGMJuhp3nPiJR
-Max-Forwards: 70
-From: sip:''' +self.self_ip+ ''';tag=PKcMBzp6yhIZQG-du1TsYkW1MPmX6L5V
-To: sip:192.168.100.119;tag=d1618be9-97ee-417b-b1d8-0323ddc06830
-Call-ID: 2mdIf8lexOTBIMg2pPgKOBdDB3SowCcf
-CSeq: 124 ACK
-Content-Length:  0'''
+                sip = self.getACK(terminal)                
                 sock.sendto(sip.encode(), (terminal, 5060))
-                
+
             if data.decode().find('100 Trying') != -1:
                 print('Terminal:100 Trying')
             if data.decode().find('BYE sip:') != -1:
                 print('Terminal:BYE')
+                
+                # Enviar ACK
+                sip = self.getACK(terminal)
+                sock.sendto(sip.encode(), (terminal, 5060))
+                sock.close()
                 break
     
     def salir(self):
