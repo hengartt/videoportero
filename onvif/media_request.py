@@ -95,7 +95,8 @@ Content-Length: 0
                     print('Terminal:200 OK (INVITE)')
 
                     # Extraer el tag despues de To: <sip: hasta el salto de linea
-                    tag = data.decode().split('To: <sip:')[1].split('tag=')[1].split('\r')[0]                
+                    tag = data.decode().split('To: <sip:')[1].split('tag=')[1].split('\r')[0]
+                    print('Tag: ' + tag)
 
                     # Enviar ACK
                     sip = self.getACK(terminal, tag)                
