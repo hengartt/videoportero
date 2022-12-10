@@ -64,6 +64,8 @@ a=fmtp:121 0-15
         print('Llamando a terminal')
         # Enviar packete SIP a la terminal
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        # Establecer puerto de origen
+        sock.bind((self.self_ip, 5060))
         sock.sendto(sip.encode(), (terminal, 5060))
         print('Paquete SIP enviado')
         print('Esperando respuesta...')
@@ -71,7 +73,7 @@ a=fmtp:121 0-15
         # Ahora esperar a que la terminal conteste
         # Escuchar el puerto de SIP (5060)
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.bind((self.self_ip, 5060))
+        # escuchar en todos los puertos        
 
         while True:
             data, addr = sock.recvfrom(1024)
