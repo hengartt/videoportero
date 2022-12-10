@@ -87,11 +87,6 @@ Content-Length: 0
         sock.bind((self.self_ip, 5060))
         sock.sendto(sip.encode(), (terminal, 5060))
         print('Paquete SIP enviado')
-        # unbind del puerto de origen
-        sock.close()
-
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.bind((self.self_ip, 5060))
 
         while True:
             try:
