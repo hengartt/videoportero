@@ -48,14 +48,14 @@ a=fmtp:121 0-15
 
     def getACK(self, terminal):
         sip = '''ACK sip:''' +terminal+ ''':5060 SIP/2.0
-
 Via: SIP/2.0/UDP ''' +self.self_ip+ ''':5060;rport;branch=z9hG4bKPjMtTNiHYmNLr3J9bm5TyUGMJuhp3nPiJR
 Max-Forwards: 70
 From: sip:''' +self.self_ip+ ''';tag=PKcMBzp6yhIZQG-du1TsYkW1MPmX6L5V
 To: sip:192.168.100.119;tag=d1618be9-97ee-417b-b1d8-0323ddc06830
 Call-ID: 2mdIf8lexOTBIMg2pPgKOBdDB3SowCcf
 CSeq: 124 ACK
-Content-Length: 0'''
+Content-Length: 0
+'''
         return sip
 
     def mostrar_menu(self):
