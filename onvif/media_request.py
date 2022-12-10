@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import requests
 import xml.etree.ElementTree as ET
 import numpy as np
