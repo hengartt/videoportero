@@ -133,6 +133,8 @@ Content-Length:  0
 
                     # Enviar OK
                     sip = self.getOKBYE(terminal, tag)
+                    sock.sendto(sip.encode(), (terminal, 5060))
+                    
                     sock.close()
                     break
                 print('Esperando respuesta...')
