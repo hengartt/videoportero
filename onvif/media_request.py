@@ -127,9 +127,12 @@ Content-Length:  0
                 if data.decode().find('BYE sip:') != -1:
                     print('Terminal:BYE')
 
+                    # Extraer el tag despues de To: <sip: hasta el salto de linea
+                    tag = data.decode().split('To: <sip:')[1].split('tag=')[1].split('\r')[0]
+                    print('Tag: ' + tag)
+
                     # Enviar OK
-
-
+                    sip = self.getOKBYE(terminal, tag)
                     sock.close()
                     break
                 print('Esperando respuesta...')
