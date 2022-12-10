@@ -73,7 +73,7 @@ Content-Length: 0
                 print('{0} no es una opción válida'.format(opcion))
 
     def escuchar(self, terminal):
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.bind((self.self_ip, 5060))
         sock.listen(1)
         while True:
