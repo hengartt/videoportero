@@ -108,7 +108,7 @@ Content-Length: 0
 
                     # Enviar ACK
                     sip = self.getACK(terminal, tag)                
-                    sock.sendto(sip, (terminal, 5060))
+                    sock.sendto(sip.encode(), (terminal, 5060))
 
                 if data.decode().find('100 Trying') != -1:
                     print('Terminal:100 Trying')
