@@ -59,13 +59,13 @@ Content-Length: 0
 '''
         return sip
     
-    def getOKBYE(self, terminal, tag):
+    def getOKBYE(self, terminal, tag_from, tag_to):
         sip = '''SIP/2.0 200 OK
 Via: SIP/2.0/UDP '''+ self.self_ip +''':5060;rport=5060;received='''+ self.self_ip +''';branch=z9hG4bKPjIwihvknffnUTD6prc4w82Jd2vxFy16E8
 Call-ID: 2mdIf8lexOTBIMg2pPgKOBdDB3SowCcf
 [Generated Call-ID: 2mdIf8lexOTBIMg2pPgKOBdDB3SowCcf]
-From: <sip:'''+ self.self_ip +'''>;tag=PKcMBzp6yhIZQG-du1TsYkW1MPmX6L5V
-To: <sip:'''+ terminal +'''>;tag='''+tag+'''
+From: <sip:'''+ self.self_ip +'''>;tag='''+ tag_from +'''
+To: <sip:'''+ terminal +'''>;tag='''+tag_to+'''
 CSeq: 125 BYE
 Content-Length:  0
 
@@ -130,11 +130,13 @@ Content-Length:  0
                     print('Terminal:BYE')
 
                     # Extraer el tag despues de From: <sip: hasta el salto de linea
-                    tag = data.decode().split('From: <sip:')[1].split('tag=')[1].split('\r')[0]                    
-                    print('Tag: ' + tag)
+                    tag_from = data.decode().split('From: <sip:')[1].split('tag=')[1].split('\r')[0]                    
+
+                    # Extraer el tag despues de To: <sip: hasta el salto de linea
+                    tag_to = data.decode().split('To: <sip:')[1].split('tag=')[1].split('\r')[0]
 
                     # Enviar OK
-                    sip = self.getOKBYE(terminal, tag)
+                    sip = self.getOKBYE(terminal, tag_from, tag_to)
                     sock.sendto(sip.encode(), (terminal, 5060))
                     
                 print('Esperando respuesta...')
