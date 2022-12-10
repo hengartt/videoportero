@@ -118,7 +118,11 @@ Content-Length: 0
                     sock.close()
                     break
                 print('Esperando respuesta...')
-            except:
+            except(KeyError, ValueError, IndexError):
+                # Si se ha presionado Ctrl+C se cierra el socket y se sale del programa
+                if(KeyboardInterrupt):
+                    sock.close()
+                    exit()
                 pass
 
     def salir(self):
