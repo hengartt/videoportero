@@ -37,28 +37,28 @@ class Menu:
 
         # Crear paquete SIP
         sip = '''INVITE sip:''' + terminal+  ''' SIP/2.0
-        Via: SIP/2.0/UDP ''' +self.self_ip+ ''':5060;rport;branch=z9hG4bKPjiNeUsXjdMuRBU2j.KGSI94O1i7pQoYqc
-        Max-Forwards: 70
-        From: sip:''' +self.self_ip+ ''';tag=PKcMBzp6yhIZQG-du1TsYkW1MPmX6L5V
-        To: sip:''' + terminal + '''
-        Contact: <sip:''' +self.self_ip+ ''':5060>
-        Call-ID: 2mdIf8lexOTBIMg2pPgKOBdDB3SowCcf
-        CSeq: 124 INVITE
-        Allow: INVITE, ACK, BYE, CANCEL, UPDATE
-        Supported: 
-        Content-Type: application/sdp
-        Content-Length:   219
-        v=0
-        o=pjsip-siprtp 3878938575 3878938575 IN IP4 videoportero
-        s=pjsip
-        c=IN IP4 ''' + self.self_ip + '''
-        t=0 0
-        m=video 5000 RTP/AVP 0 103 104 121
-        a=rtpmap:0 PCMU/8000
-        a=sendrecv
-        a=rtpmap:121 telephone-event/8000
-        a=fmtp:121 0-15
-            '''
+Via: SIP/2.0/UDP ''' +self.self_ip+ ''':5060;rport;branch=z9hG4bKPjiNeUsXjdMuRBU2j.KGSI94O1i7pQoYqc
+Max-Forwards: 70
+From: sip:''' +self.self_ip+ ''';tag=PKcMBzp6yhIZQG-du1TsYkW1MPmX6L5V
+To: sip:''' + terminal + '''
+Contact: <sip:''' +self.self_ip+ ''':5060>
+Call-ID: 2mdIf8lexOTBIMg2pPgKOBdDB3SowCcf
+CSeq: 124 INVITE
+Allow: INVITE, ACK, BYE, CANCEL, UPDATE
+Supported: 
+Content-Type: application/sdp
+Content-Length:   219
+v=0
+o=pjsip-siprtp 3878938575 3878938575 IN IP4 videoportero
+s=pjsip
+c=IN IP4 ''' + self.self_ip + '''
+t=0 0
+m=video 5000 RTP/AVP 0 103 104 121
+a=rtpmap:0 PCMU/8000
+a=sendrecv
+a=rtpmap:121 telephone-event/8000
+a=fmtp:121 0-15
+'''
 
         print('Llamando a terminal')
         # Enviar packete SIP a la terminal
