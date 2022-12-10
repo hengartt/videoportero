@@ -91,7 +91,7 @@ int main(void)
     if (sess)
     {
         /* Session must be destroyed manually */
-        ctx.destroy_session(sess);
+        ctx.destroy_session(sess);p
     }
 
     return EXIT_SUCCESS;
