@@ -36,8 +36,7 @@ class Menu:
         terminal = input('Introduzca la IP de la terminal: ')
 
         # Crear paquete SIP
-        sip = '''
-            INVITE sip:''' + terminal+  ''' SIP/2.0
+        sip = '''INVITE sip:''' + terminal+  ''' SIP/2.0
             Via: SIP/2.0/UDP 192.168.100.142:5060;rport;branch=z9hG4bKPjiNeUsXjdMuRBU2j.KGSI94O1i7pQoYqc
             Max-Forwards: 70
             From: sip:''' +self.self_ip+ ''';tag=PKcMBzp6yhIZQG-du1TsYkW1MPmX6L5V
