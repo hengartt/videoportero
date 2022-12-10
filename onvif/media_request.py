@@ -92,32 +92,28 @@ Content-Length: 0
 
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.bind((self.self_ip, 5060))
-        sock.listen(1)
+
         while True:
-            conn, addr = sock.accept()
-            data = conn.recv(1024)
-            if data.decode().find('200 OK') != -1 and data.decode().find('INVITE') != -1:
-                print('Terminal:200 OK (INVITE)')
+            try:
+                data, addr = sock.recvfrom(1024)            
+                if data.decode().find('200 OK') != -1 and data.decode().find('INVITE') != -1:
+                    print('Terminal:200 OK (INVITE)')
 
-                # Enviar ACK
-                sip = self.getACK(terminal)                
-                sock.sendto(sip.encode(), (terminal, 5060))
+                    # Enviar ACK
+                    sip = self.getACK(terminal)                
+                    sock.sendto(sip, (terminal, 5060))
 
-            if data.decode().find('100 Trying') != -1:
-                print('Terminal:100 Trying')
-            if data.decode().find('BYE sip:') != -1:
-                print('Terminal:BYE')
+                if data.decode().find('100 Trying') != -1:
+                    print('Terminal:100 Trying')
+                if data.decode().find('BYE sip:') != -1:
+                    print('Terminal:BYE')
 
-                sock.close()
-                break
-        print('Esperando respuesta...')
+                    sock.close()
+                    break
+                print('Esperando respuesta...')
+            except:
+                pass
 
-        # Ahora esperar a que la terminal conteste
-        # Escuchar el puerto de SIP (5060) y esperar a que la terminal conteste
-        # Habilitar nuevo hilo para que el programa principal siga funcionando
-        hilo = threading.Thread(target=self.escuchar, args=(terminal,))
-        hilo.start()    
-    
     def salir(self):
         print('Saliendo del programa')
         exit()
