@@ -36,29 +36,29 @@ class Menu:
         terminal = input('Introduzca la IP de la terminal: ')
 
         # Crear paquete SIP
-        sip = '''INVITE sip:''' + terminal+  ''' SIP/2.0\r\b
-        Via: SIP/2.0/UDP 192.168.100.142:5060;rport;branch=z9hG4bKPjiNeUsXjdMuRBU2j.KGSI94O1i7pQoYqc\r\n
-        Max-Forwards: 70\r\n
-        From: sip:''' +self.self_ip+ ''';tag=PKcMBzp6yhIZQG-du1TsYkW1MPmX6L5V\r\n
-        To: sip:''' + terminal + '''\r\n
-        Contact: <sip:''' +self.self_ip+ ''':5060>\r\n
-        Call-ID: 2mdIf8lexOTBIMg2pPgKOBdDB3SowCcf\r\n
-        CSeq: 124 INVITE\r\n
-        Allow: INVITE, ACK, BYE, CANCEL, UPDATE\r\n
-        Supported: \r\n
-        Content-Type: application/sdp\r\n
-        Content-Length:   219\r\n
-        v=0\r\n
-        o=pjsip-siprtp 3878938575 3878938575 IN IP4 videoportero\r\n
-        s=pjsip\r\n
-        c=IN IP4 ''' + self.self_ip + '''\r\n
-        t=0 0\r\n
-        m=video 5000 RTP/AVP 0 103 104 121\r\n
-        a=rtpmap:0 PCMU/8000\r\n
-        a=sendrecv\r\n
-        a=rtpmap:121 telephone-event/8000\r\n
+        sip = '''INVITE sip:''' + terminal+  ''' SIP/2.0
+        Via: SIP/2.0/UDP ''' +self.self_ip+ ''':5060;rport;branch=z9hG4bKPjiNeUsXjdMuRBU2j.KGSI94O1i7pQoYqc
+        Max-Forwards: 70
+        From: sip:''' +self.self_ip+ ''';tag=PKcMBzp6yhIZQG-du1TsYkW1MPmX6L5V
+        To: sip:''' + terminal + '''
+        Contact: <sip:''' +self.self_ip+ ''':5060>
+        Call-ID: 2mdIf8lexOTBIMg2pPgKOBdDB3SowCcf
+        CSeq: 124 INVITE
+        Allow: INVITE, ACK, BYE, CANCEL, UPDATE
+        Supported: 
+        Content-Type: application/sdp
+        Content-Length:   219
+        v=0
+        o=pjsip-siprtp 3878938575 3878938575 IN IP4 videoportero
+        s=pjsip
+        c=IN IP4 ''' + self.self_ip + '''
+        t=0 0
+        m=video 5000 RTP/AVP 0 103 104 121
+        a=rtpmap:0 PCMU/8000
+        a=sendrecv
+        a=rtpmap:121 telephone-event/8000
         a=fmtp:121 0-15
-        '''
+            '''
 
         print('Llamando a terminal')
         # Enviar packete SIP a la terminal
