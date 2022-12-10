@@ -4,6 +4,7 @@ import requests
 import xml.etree.ElementTree as ET
 import numpy as np
 import socket
+import time
 
 class Menu:
     def __init__(self):
@@ -66,6 +67,7 @@ a=fmtp:121 0-15
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         # Establecer puerto de origen
         sock.bind((self.self_ip, 5060))
+        time.sleep(1)
         sock.sendto(sip.encode(), (terminal, 5060))
         print('Paquete SIP enviado')
         print('Esperando respuesta...')
