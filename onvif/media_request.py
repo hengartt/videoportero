@@ -69,6 +69,7 @@ To: <sip:'''+ terminal +'''>;tag='''+tag+'''
 CSeq: 125 BYE
 Content-Length:  0
 '''
+        return sip
 
     def mostrar_menu(self):
         print(self.menu)
@@ -134,7 +135,7 @@ Content-Length:  0
                     # Enviar OK
                     sip = self.getOKBYE(terminal, tag)
                     sock.sendto(sip.encode(), (terminal, 5060))
-                    
+
                     sock.close()
                     break
                 print('Esperando respuesta...')
