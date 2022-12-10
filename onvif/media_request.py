@@ -132,6 +132,7 @@ Content-Length:  0
                     # Buscar todos los tag en el paquete
                     tags = re.findall('tag=[0-9a-zA-Z]+', data.decode())
                     # Extraer el tag despues de To: <sip: hasta el salto de linea
+                    print(tags)
                     tag = tags[1].split('tag=')[1]
                     
                     print('Tag: ' + tag)
