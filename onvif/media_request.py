@@ -87,11 +87,11 @@ Content-Length:  0
 
         # Pedir número de terminal
         contactos = {
-            '   1:': '192.168.100.119'
+            '1': '192.168.100.119'
         }
-        print(' Contactos:')
+        print('\n Contactos:')
         for key, value in contactos.items():
-            print(key, value)
+            print('  '+key+':', value)
         print('')
 
         terminal = input('Introduzca un contacto: ')
