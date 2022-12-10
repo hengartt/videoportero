@@ -107,27 +107,28 @@ Content-Length:  0
         # Establecer puerto de origen
         sock.bind((self.self_ip, 5060))
         sock.sendto(sip.encode(), (terminal, 5060))
-        print('Paquete SIP enviado')
+        print('Paquete SIP enviado\n')
 
         while True:
             try:
                 data, addr = sock.recvfrom(1024)            
                 if data.decode().find('200 OK') != -1 and data.decode().find('INVITE') != -1:
-                    print('Terminal:200 OK (INVITE)')
+                    print('Terminal: 200 OK (INVITE)')
 
                     # Extraer el tag despues de To: <sip: hasta el salto de linea
                     tag = data.decode().split('To: <sip:')[1].split('tag=')[1].split('\r')[0]
-                    print('Tag: ' + tag)
+                    #print('Tag: ' + tag)
 
                     # Enviar ACK
                     sip = self.getACK(terminal, tag)                
                     sock.sendto(sip.encode(), (terminal, 5060))
+                    print('Videoportero: ACK enviado')
 
                 if data.decode().find('100 Trying') != -1:
-                    print('Terminal:100 Trying')
+                    print('Terminal: 100 Trying')
 
                 if data.decode().find('BYE sip:') != -1:
-                    print('Terminal:BYE')
+                    print('Terminal: BYE')
 
                     # Extraer el tag despues de From: <sip: hasta el salto de linea
                     tag_from = data.decode().split('From: <sip:')[1].split('tag=')[1].split('\r')[0]                    
@@ -141,10 +142,10 @@ Content-Length:  0
                     # Enviar OK
                     sip = self.getOKBYE(terminal, branch, tag_from, tag_to)
                     sock.sendto(sip.encode(), (terminal, 5060))
+                    print('Videoportero: 200 OK (BYE) enviado')
                     sock.close()
                     break
                     
-                print('Esperando respuesta...')
             except(KeyError, ValueError, IndexError):
                 # Si se ha presionado Ctrl+C se cierra el socket y se sale del programa
                 if(KeyboardInterrupt):
