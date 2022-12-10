@@ -46,12 +46,12 @@ a=fmtp:121 0-15
 '''
         return sip
 
-    def getACK(self, terminal):
+    def getACK(self, terminal, tag):
         sip = '''ACK sip:''' +terminal+ ''':5060 SIP/2.0
 Via: SIP/2.0/UDP ''' +self.self_ip+ ''':5060;rport;branch=z9hG4bKPjMtTNiHYmNLr3J9bm5TyUGMJuhp3nPiJR
 Max-Forwards: 70
 From: sip:''' +self.self_ip+ ''';tag=PKcMBzp6yhIZQG-du1TsYkW1MPmX6L5V
-To: sip:192.168.100.119;tag=d1618be9-97ee-417b-b1d8-0323ddc06830
+To: sip:192.168.100.119;tag='''+tag+'''
 Call-ID: 2mdIf8lexOTBIMg2pPgKOBdDB3SowCcf
 CSeq: 124 ACK
 Content-Length: 0
@@ -95,11 +95,10 @@ Content-Length: 0
                     print('Terminal:200 OK (INVITE)')
 
                     # Extraer el tag despues de To: <sip: hasta el salto de linea
-                    tag = data.decode().split('To: <sip:')[1].split('tag=')[1].split('\r')[0]
-                    print('Tag: ' + tag)                    
+                    tag = data.decode().split('To: <sip:')[1].split('tag=')[1].split('\r')[0]                
 
                     # Enviar ACK
-                    sip = self.getACK(terminal)                
+                    sip = self.getACK(terminal, tag)                
                     sock.sendto(sip, (terminal, 5060))
 
                 if data.decode().find('100 Trying') != -1:
