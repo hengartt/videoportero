@@ -63,7 +63,6 @@ Content-Length: 0
         sip = '''SIP/2.0 200 OK
 Via: SIP/2.0/UDP '''+ self.self_ip +''':5060;rport=5060;received='''+ self.self_ip +''';branch=z9hG4bKPjIwihvknffnUTD6prc4w82Jd2vxFy16E8
 Call-ID: 2mdIf8lexOTBIMg2pPgKOBdDB3SowCcf
-[Generated Call-ID: 2mdIf8lexOTBIMg2pPgKOBdDB3SowCcf]
 From: <sip:'''+ self.self_ip +'''>;tag='''+ tag_from +'''
 To: <sip:'''+ terminal +'''>;tag='''+tag_to+'''
 CSeq: 125 BYE
