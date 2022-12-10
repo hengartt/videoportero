@@ -68,6 +68,7 @@ From: <sip:'''+ self.self_ip +'''>;tag=PKcMBzp6yhIZQG-du1TsYkW1MPmX6L5V
 To: <sip:'''+ terminal +'''>;tag='''+tag+'''
 CSeq: 125 BYE
 Content-Length:  0
+
 '''
         return sip
 
@@ -135,9 +136,7 @@ Content-Length:  0
                     # Enviar OK
                     sip = self.getOKBYE(terminal, tag)
                     sock.sendto(sip.encode(), (terminal, 5060))
-
-                    sock.close()
-                    break
+                    
                 print('Esperando respuesta...')
             except(KeyError, ValueError, IndexError):
                 # Si se ha presionado Ctrl+C se cierra el socket y se sale del programa
