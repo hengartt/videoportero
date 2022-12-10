@@ -92,18 +92,21 @@ Content-Length: 0
 
         # Ahora esperar a que la terminal conteste
         # Escuchar el puerto de SIP (5060)
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.bind((self.self_ip, 5060))
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)        
 
         while True:
             data, addr = sock.recvfrom(1024)
             # Si la respuesta es 200 OK, entonces se puede realizar la petición POST
             if data.decode().find('200 OK') != -1:
                 print('Terminal:200 OK')
+                socket.close()
 
+                socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+                socket.bind((self.self_ip, 5060))
                 # Enviar ACK
                 sip = self.getACK(terminal)                
-                sock.sendto(sip.encode(), (terminal, 5060))
+                socket.sendto(sip.encode(), (terminal, 5060))
+                socket.close()
 
             if data.decode().find('100 Trying') != -1:
                 print('Terminal:100 Trying')
@@ -111,8 +114,12 @@ Content-Length: 0
                 print('Terminal:BYE')
                 
                 # Enviar ACK
-                sip = self.getACK(terminal)
-                sock.sendto(sip.encode(), (terminal, 5060))
+                socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+                socket.bind((self.self_ip, 5060))
+                sip = self.getACK(terminal)                
+                socket.sendto(sip.encode(), (terminal, 5060))
+                socket.close()
+
                 sock.close()
                 break
     
