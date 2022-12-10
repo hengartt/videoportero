@@ -60,6 +60,13 @@ a=sendrecv
 a=rtpmap:121 telephone-event/8000
 a=fmtp:121 0-15
 '''
+        # Ahora esperar a que la terminal conteste
+        while True:
+            # Escuchar el puerto de SIP (5060)
+            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            sock.bind((self.self_ip, 5060))
+            data, addr = sock.recvfrom(1024)
+            print(data)
 
         print('Llamando a terminal')
         # Enviar packete SIP a la terminal
