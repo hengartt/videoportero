@@ -97,9 +97,8 @@ Content-Length: 0
         while True:
             data, addr = sock.recvfrom(1024)
             # Si la respuesta es 200 OK, entonces se puede realizar la petición POST
-            if data.decode().find('200 OK') != -1:
-                print('Terminal:200 OK')
-                socket.close()
+            if data.decode().find('200 OK') != -1 and data.decode().find('INVITE') != -1:
+                print('Terminal:200 OK (INVITE)')
 
                 socket_send = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
                 socket_send.bind((self.self_ip, 5060))
