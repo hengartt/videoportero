@@ -4,7 +4,7 @@ import requests
 import xml.etree.ElementTree as ET
 import numpy as np
 import socket
-import threading
+import re
 
 class Menu:
     def __init__(self):
@@ -129,10 +129,11 @@ Content-Length:  0
                 if data.decode().find('BYE sip:') != -1:
                     print('Terminal:BYE')
 
-                    # Buscar el tag despues de To: <sip: hasta el salto de linea como en
-                    # <sip:192.168.100.119>;tag=f3a648d8-15e9-442a-b5c0-b9c1d6f9b3ec
-
-                    tag = (data.decode().split('To: <sip:')[1]).split('tag=')[1].split('\r')[0]
+                    # Buscar todos los tag en el paquete
+                    tags = re.findall('tag=[0-9a-zA-Z]+', data.decode())
+                    # Extraer el tag despues de To: <sip: hasta el salto de linea
+                    tag = tags[1].split('tag=')[1]
+                    
                     print('Tag: ' + tag)
 
                     # Enviar OK
